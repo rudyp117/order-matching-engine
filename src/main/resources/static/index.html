@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101211">
+  <meta name="description" content="TAPE: an educational, single-instrument order matching simulator.">
+  <title>TAPE — Exchange Lab</title>
+  <link rel="icon" type="image/svg+xml" href="/mark.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to exchange</a>
+<header class="masthead">
+  <a class="brand" href="/" aria-label="TAPE Exchange Lab home"><img src="/mark.svg" width="30" height="30" alt=""><strong>TAPE</strong><span class="brand-divider"></span><span>EXCHANGE LAB</span></a>
+  <span class="simulation"><span aria-hidden="true">○</span> SIMULATED EXCHANGE</span>
+</header>
+<main id="main">
+  <section class="intro" aria-labelledby="page-title">
+    <div><p class="eyebrow">ONE INSTRUMENT. EVERY ORDER COUNTS.</p><h1>A market, in miniature.</h1><p class="lede">Explore the mechanics behind a limit order book.<br>Price first. Time second. Every execution accounted for.</p></div>
+    <div class="instrument"><div><span class="instrument-symbol">TAPE</span><span class="tag">LIMIT ORDERS ONLY</span></div><p>Tick size <strong>$0.01</strong><span>·</span> Single-process engine</p><p id="connection" class="connection" role="status">Connecting to your local engine…</p></div>
+  </section>
+  <div id="global-error" class="notice error" role="alert" hidden></div>
+  <section class="stat-grid" aria-label="Market snapshot">
+    <div class="stat"><span>BEST BID</span><strong id="best-bid" class="buy-text">—</strong><small>Highest resting buy</small></div>
+    <div class="stat"><span>BEST ASK</span><strong id="best-ask" class="sell-text">—</strong><small>Lowest resting sell</small></div>
+    <div class="stat"><span>SPREAD</span><strong id="spread">—</strong><small>Ask minus bid</small></div>
+    <div class="stat"><span>RESTING ORDERS</span><strong id="resting">—</strong><small>Orders with unfilled quantity</small></div>
+  </section>
+  <div class="primary-grid">
+    <section class="panel book-panel" aria-labelledby="book-title">
+      <div class="panel-heading"><div><p class="eyebrow">01 / LIQUIDITY</p><h2 id="book-title">Order book</h2></div><span class="tag">TOP 10 LEVELS</span></div>
+      <div class="book-columns">
+        <div><h3 class="side-heading buy-text"><span>Bids</span><span>BUY</span></h3><table aria-label="Buy price levels"><thead><tr><th>Price (USD)</th><th>Quantity</th><th>Orders</th></tr></thead><tbody id="bids"><tr><td colspan="3" class="empty">Loading bid levels…</td></tr></tbody></table></div>
+        <div><h3 class="side-heading sell-text"><span>Asks</span><span>SELL</span></h3><table aria-label="Sell price levels"><thead><tr><th>Price (USD)</th><th>Quantity</th><th>Orders</th></tr></thead><tbody id="asks"><tr><td colspan="3" class="empty">Loading ask levels…</td></tr></tbody></table></div>
+      </div>
+      <div class="book-footer"><span>Accepted orders <strong id="accepted">—</strong></span><span>Executions <strong id="executions">—</strong></span><span>Levels <strong id="levels">—</strong></span></div>
+    </section>
+    <section class="panel entry-panel" aria-labelledby="entry-title">
+      <div class="panel-heading"><div><p class="eyebrow">02 / PARTICIPATE</p><h2 id="entry-title">Place a limit order</h2></div><span class="small-muted">TAPE</span></div>
+      <form id="order-form">
+        <div class="side-toggle" role="group" aria-label="Order side"><button type="button" data-side="BUY" class="selected" aria-pressed="true">Buy</button><button type="button" data-side="SELL" aria-pressed="false">Sell</button></div>
+        <label for="price">Limit price <span>USD · $0.01 ticks</span></label>
+        <div class="input-wrap"><span aria-hidden="true">$</span><input id="price" name="price" type="text" inputmode="decimal" required value="100.25" pattern="[0-9]+(\.[0-9]{1,2})?" autocomplete="off" aria-describedby="price-help"></div>
+        <small id="price-help" class="field-help">Your maximum buy price or minimum sell price.</small>
+        <label for="quantity">Quantity <span>1–1,000,000 units</span></label>
+        <input id="quantity" name="quantity" type="number" min="1" max="1000000" step="1" required value="10">
+        <button type="submit" id="submit-order" class="submit buy">Submit buy order <span aria-hidden="true">↗</span></button>
+        <p class="form-note">Simulated orders only. No money or brokerage connection.</p>
+      </form>
+      <div id="action-result" class="action-result" role="status" aria-live="polite">Your order receipt will appear here.</div>
+    </section>
+  </div>
+  <div class="secondary-grid">
+    <section class="panel" aria-labelledby="trades-title">
+      <div class="panel-heading"><div><p class="eyebrow">03 / EXECUTIONS</p><h2 id="trades-title">Recent trades</h2></div><span class="tag">PERSISTED HISTORY</span></div>
+      <div class="table-scroll"><table aria-label="Recent executions, newest first"><thead><tr><th>Time</th><th>Price (USD)</th><th>Qty</th><th>Maker / taker</th></tr></thead><tbody id="trades"><tr><td colspan="4" class="empty">Loading trade history…</td></tr></tbody></table></div>
+    </section>
+    <section class="panel" aria-labelledby="orders-title">
+      <div class="panel-heading"><div><p class="eyebrow">04 / YOUR SESSION</p><h2 id="orders-title">Tracked orders</h2></div><span class="small-muted">Saved in this browser</span></div>
+      <form id="lookup-form" class="lookup"><label class="sr-only" for="lookup-id">Order ID to track</label><input id="lookup-id" placeholder="Track an order by its full UUID" required autocomplete="off"><button type="submit" class="quiet-button">Track</button></form>
+      <div class="table-scroll"><table aria-label="Tracked order status"><thead><tr><th>Order / side</th><th>Remaining</th><th>Status</th><th>Action</th></tr></thead><tbody id="orders"><tr><td colspan="4" class="empty">Submit an order to follow its status here.</td></tr></tbody></table></div>
+    </section>
+  </div>
+  <section class="guide" aria-labelledby="guide-title"><div><p class="eyebrow">THE RULES OF THE BOOK</p><h2 id="guide-title">Price. Then patience.</h2><p>A better price always goes first. At the same price, the first accepted order wins. Trades execute at the resting order’s price.</p></div><div class="walkthrough"><p class="eyebrow">TRY THIS ON AN EMPTY BOOK</p><ol><li>Sell 5 units at $100.00, then sell 5 more at $100.00.</li><li>Buy 7 at $100.00. The first sell fills; the second has 3 left.</li><li>Find the second sell in tracked orders and cancel it.</li></ol><p>For a multi-level sweep, run <code>./scripts/demo.sh</code> locally.</p></div></section>
+  <footer><span>TAPE / Order Matching Engine</span><span>Local snapshots every 2 seconds · All activity is simulated</span></footer>
+</main>
+</body>
+</html>

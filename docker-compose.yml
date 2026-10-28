@@ -1,0 +1,49 @@
+name: order-matching-engine
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      # Local-development credentials only. Never reuse these outside this simulator.
+      POSTGRES_DB: tape
+      POSTGRES_USER: ${DB_USER:-tape_dev}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-tape_dev_only}
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - tape_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d tape"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+  app:
+    build: .
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/tape
+      DB_USER: ${DB_USER:-tape_dev}
+      DB_PASSWORD: ${DB_PASSWORD:-tape_dev_only}
+      SERVER_ADDRESS: 0.0.0.0
+    ports:
+      - "127.0.0.1:${APP_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+  test-db:
+    profiles: [test]
+    image: postgres:16-alpine
+    environment:
+      # Disposable integration-test database, separate from demo data.
+      POSTGRES_DB: tape_it
+      POSTGRES_USER: tape_test
+      POSTGRES_PASSWORD: tape_test_only
+    ports:
+      - "127.0.0.1:${IT_DB_PORT:-15432}:5432"
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tape_test -d tape_it"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  tape_data:

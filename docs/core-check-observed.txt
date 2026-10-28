@@ -1,0 +1,26 @@
+PASS ambiguousCommitRecoveredByReplay
+PASS bestPriceBeforeEarlierWorsePrice
+PASS cancelMiddlePreservesFifo
+PASS cancelMissingFilledAndCancelled
+PASS cancelPartialAndRemoveLevel
+PASS completeFillNeverRests
+PASS concurrentSubmissionsAreSerialized
+PASS copyIsIsolatedAndSnapshotsImmutable
+PASS corruptReplayFailsLoudly
+PASS duplicateGeneratorIsRejectedBeforePersistence
+PASS duplicateIdsEvenAfterFill
+PASS fifoRetainedAfterPartialFill
+PASS invalidInputsAndBounds
+PASS makerPricingBothDirections
+PASS multiLevelSweep
+PASS partialMakerAndTaker
+PASS rejectSequenceGapsAndReordering
+PASS restartRestoresBookStatusesTrades
+PASS restingAndNoCross
+PASS rollbackAndFence
+PASS seededConservationAndAggregatedDepth
+PASS sellSweepDescendingBids
+PASS stableReplayAndTradeHistory
+PASS stateIsPublishedOnlyAfterCommit
+PASS wideAggregationAndBoundedViews
+Verified 25 scenarios (plain Java runner; NOT a Maven/JUnit run).

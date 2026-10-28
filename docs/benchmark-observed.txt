@@ -1,0 +1,16 @@
+workload=seeded six-command FIFO/partial-fill/sweep/cancel cycles; core apply only
+seed=20261027
+java=17.0.20+8-1-24.04-Ubuntu
+vm=OpenJDK 64-Bit Server VM
+os=Linux 6.18.55 amd64
+available_processors=8
+max_heap_bytes=402653184
+warmup_commands=12000
+measured_commands=30000
+accepted_orders=25000
+executed_trades=20000
+elapsed_seconds=0.071232
+commands_per_second=421157.47
+average_latency_us=2.274
+p95_latency_us=6.229
+limits=no HTTP, database, service lock, state copying, network, or disk; shallow book; includes timers and JVM effects

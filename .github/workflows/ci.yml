@@ -1,0 +1,29 @@
+name: Java correctness and PostgreSQL recovery
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: tape_it
+          POSTGRES_USER: tape_test
+          POSTGRES_PASSWORD: tape_test_only
+        ports: ["15432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U tape_test -d tape_it"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - name: Unit, controller, and real PostgreSQL restart tests
+        run: ./mvnw -B -ntp -Pintegration verify
+      - name: Check source formatting
+        run: python3 scripts/format-check.py

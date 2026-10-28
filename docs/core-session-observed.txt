@@ -1,0 +1,13 @@
+1 SELL 5 @ 10000 -> OPEN, remaining=5
+2 SELL 5 @ 10000 -> OPEN, remaining=5
+3 BUY 7 @ 10000 -> FILLED, remaining=0
+  maker #1: 5 @ 10000
+  maker #2: 2 @ 10000
+Second maker: PARTIALLY_FILLED, remaining=3
+4 SELL 4 @ 10001 -> OPEN, remaining=4
+5 BUY 8 @ 10001 -> PARTIALLY_FILLED, remaining=1
+  maker #2: 3 @ 10000
+  maker #4: 4 @ 10001
+6 CANCEL #5 -> CANCELLED, remaining=1
+Metrics[restingOrders=0, acceptedOrders=5, executedTrades=4, bidLevels=0, askLevels=0, lastCommandSequence=6]
+Book[symbol=TAPE, bids=[], asks=[], spreadTicks=null]

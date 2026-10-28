@@ -1,0 +1,16 @@
+workload=seeded six-command FIFO/partial-fill/sweep/cancel cycles; core apply only
+seed=20261027
+java=21.0.13+9-LTS
+vm=OpenJDK 64-Bit Server VM
+os=Mac OS X 15.7.9 aarch64
+available_processors=14
+max_heap_bytes=402653184
+warmup_commands=12000
+measured_commands=30000
+accepted_orders=25000
+executed_trades=20000
+elapsed_seconds=0.026685
+commands_per_second=1124214.79
+average_latency_us=0.863
+p95_latency_us=2.208
+limits=no HTTP, database, service lock, state copying, network, or disk; shallow book; includes timers and JVM effects

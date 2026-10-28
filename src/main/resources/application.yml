@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: order-matching-engine
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/tape}
+    username: ${DB_USER:tape_dev}
+    password: ${DB_PASSWORD:tape_dev_only}
+    hikari:
+      maximum-pool-size: 4
+      connection-timeout: 3000
+  flyway:
+    enabled: true
+    clean-disabled: true
+server:
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  port: ${PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
